@@ -1,0 +1,20 @@
+# Copyright (c) ArenaML Labs Pvt Ltd.
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/oapi-codegen/oapi-codegen/HEAD/configuration-schema.json
+package: client
+output: client.gen.go
+generate:
+  models: true
+  client: true
+output-options:
+  include-tags:
+    - basis
+    - engine
+    - env
+    - iam
+    - pipeline
+    - store
+    - trigger
+  skip-prune: false
+compatibility:
+  circular-reference-limit: 3

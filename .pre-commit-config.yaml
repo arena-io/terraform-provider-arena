@@ -1,0 +1,19 @@
+# Copyright (c) HashiCorp, Inc.
+
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.29.0
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+      - id: go-fmt
+      - id: validate-toml
+      - id: go-mod-tidy
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v2.6.1
+    hooks:
+      - id: golangci-lint-config-verify
+      - id: golangci-lint
+

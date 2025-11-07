@@ -1,0 +1,112 @@
+# Copyright (c) ArenaML Labs Pvt Ltd.
+
+version: 3
+
+dotenv:
+  - '.env'
+  - '{{.HOME}}/.secrets/ctrl-dev.env'
+  - '{{.HOME}}/.arenaml/ctrl-dev.env'
+
+vars:
+  PG_DB: control
+
+tasks:
+  lint:
+    cmds:
+      - golangci-lint run --fix
+  pre-commit-all:
+    cmds:
+      - pre-commit run -a
+  pre-commit:
+    cmds:
+      - pre-commit run
+  scan:
+    cmds:
+      - gitleaks detect -v
+      - gitleaks detect --no-git -v
+  test:
+    vars:
+      TEST_NAME: '^{{.CLI_ARGS}}$'
+    desc: "test a given func"
+    cmds:
+      - go test -run '{{.TEST_NAME}}' ./...
+  build-tf:
+    cmds:
+      - go mod tidy
+      - go build -o ./bin/terraform-provider-arenaml
+  gen-rest-client:
+    cmds:
+      - cp {{.ROOT_DIR}}/../control/docs/swag/openapi.json ./openapi.json
+      - go generate -x
+    dir: generator/client
+  gen-tf-docs:
+    cmds:
+      - go generate ./...
+  gen-tf-schema:
+    cmds:
+      - for: [ 'engine', 'basis', 'env', 'iam', 'pipeline', 'store', 'triggers' ]
+        cmd: tfplugingen-framework generate data-sources --output generator/schema  --input specs/{{.ITEM}}.json
+      - for: [ 'engine', 'basis', 'env', 'iam', 'pipeline', 'store', 'triggers' ]
+        cmd: tfplugingen-framework generate resources --output generator/schema  --input specs/{{.ITEM}}.json
+  dev-setup:
+    cmds:
+      - task: setup-brew
+      - task: setup-go-tools
+      - task: setup-pre-commit
+      - task: setup-swag
+  setup-swag:
+    cmds:
+      - npm install -g swagger2openapi
+      - go install github.com/swaggo/swag/cmd/swag@latest
+  setup-brew:
+    desc: "setup dev tools in brew"
+    platforms: [ darwin ]
+    cmds:
+      - brew install orbstack # only needed on Mac
+      - brew install git-secrets
+      - brew install pre-commit
+      - brew install mise
+  setup-go-tools:
+    cmds:
+      - go get -tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+      - go get -tool github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@latest
+      - go get -tool github.com/go-task/task/v3/cmd/task@latest
+      - go get -tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+      - go get -tool github.com/hashicorp/terraform-plugin-codegen-openapi/cmd/tfplugingen-openapi@latest
+      - go get -tool github.com/hashicorp/terraform-plugin-codegen-framework/cmd/tfplugingen-framework@latest
+  setup-pre-commit:
+    cmds:
+      - pre-commit autoupdate
+      - pre-commit install
+  go-pkg-update:
+    cmds:
+      - go-mod-upgrade
+      - go-global-update
+  orb-cleanup:
+    cmds:
+      - docker image prune -a
+      - docker builder prune
+      - docker system prune
+  plan-tf:
+    cmds:
+      - terraform plan
+    dir: tf
+  apply-tf:
+    cmds:
+      - terraform apply -auto-approve
+    dir: examples/tf
+  del-tf:
+    cmds:
+      - terraform destroy -auto-approve
+    dir: examples/tf
+  clean-tf:
+    cmds:
+      - rm terraform.tfstate terraform.tfstate.backup
+    dir: examples/tf
+
+
+
+
+
+
+
