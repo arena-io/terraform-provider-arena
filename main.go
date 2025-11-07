@@ -11,6 +11,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
 
+//go:generate go tool github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir . -provider-name arenaml
+//go:generate go tool github.com/hashicorp/copywrite headers -d . --config ./.copywrite.hcl
+
 var (
 	// these will be set by the goreleaser configuration
 	// to appropriate values for the compiled binary

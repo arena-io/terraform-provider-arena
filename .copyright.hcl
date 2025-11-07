@@ -8,6 +8,7 @@ project {
 header_ignore = [
     # internal catalog metadata (prose)
     "META.d/**/*.yaml",
+    ".idea/**/*",
 
     # examples used within documentation (prose)
     "examples/**",

@@ -2,4 +2,4 @@
 
 package client
 
-//go:generate oapi-codegen -config cfg.yaml openapi.json
+//go:generate go tool oapi-codegen -config cfg.yaml openapi.json
