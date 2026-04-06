@@ -1,0 +1,4 @@
+[extend]
+
+[[allowlists]]
+paths = ['''examples/''']
