@@ -5662,6 +5662,10 @@
                     "kind": {
                         "type": "string"
                     },
+                    "misc": {
+                        "type": "object",
+                        "additionalProperties": true
+                    },
                     "mount_path": {
                         "type": "string"
                     }

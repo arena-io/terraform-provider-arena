@@ -44,7 +44,6 @@ type SensorSpec struct {
 	Operating   types.Map            `tfsdk:"operating"`
 	Power       types.Map            `tfsdk:"power"`
 	RangeUnit   types.String         `tfsdk:"range_unit"`
-	Units       types.String         `tfsdk:"units"`
 	VFoV        types.Float32        `tfsdk:"v_fov"`
 }
 
@@ -272,7 +271,7 @@ func (s *SensorSpec) ToModelJSON(ctx context.Context) (spec client.SchemaSensorS
 	}
 
 	if !s.Power.IsNull() && !s.Power.IsUnknown() {
-		pw, ok := helper.GoMapFloat32FromTfMap(ctx, s.Operating)
+		pw, ok := helper.GoMapFloat32FromTfMap(ctx, s.Power)
 		if !ok {
 			err = fmt.Errorf("failed to convert comm map")
 			return
@@ -329,7 +328,6 @@ func sensorSpecAttrs() []BaseSchema {
 		{Name: "operating", AttrType: TfMap, SubType: TFFloat, Optional: true, Desc: "operating parameters"},
 		{Name: "power", AttrType: TfMap, SubType: TFFloat, Optional: true, Desc: "power parameters"},
 		{Name: "range_unit", AttrType: TfString, Optional: true, Desc: "unit for range values"},
-		{Name: "units", AttrType: TfString, Optional: true, Desc: "units"},
 		{Name: "v_fov", AttrType: TFFloat, Optional: true, Desc: "vertical field of view"},
 	}
 }

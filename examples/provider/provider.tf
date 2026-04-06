@@ -1,8 +1,11 @@
 terraform {
   required_providers {
-    arenaml = {
-      source  = "arenaml.dev/tf/arenaml"
+    arena = {
+      source  = "arena-io/arena"
     }
   }
 }
 
+provider "arena" {
+  server_url = "http://localhost:18080/api/v1"
+}

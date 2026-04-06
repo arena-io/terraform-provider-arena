@@ -62,8 +62,8 @@ func droneStorageAttrs() []BaseSchema {
 	return []BaseSchema{
 		{Name: "guid", AttrType: TfString, Optional: true, Desc: "disk guid"},
 		{Name: "dev_path", AttrType: TfString, Optional: true, Desc: "path under /dev tree"},
-		{Name: "mount_path", AttrType: TfString, Optional: true, Desc: "filesystem mount path of this disk"},
-		{Name: "capacity", AttrType: TfInt, Optional: true, Desc: "storage capacity in GB"},
+		{Name: "mount_path", AttrType: TfString, Required: true, Desc: "filesystem mount path of this disk"},
+		{Name: "capacity", AttrType: TfInt, Required: true, Desc: "storage capacity in GB"},
 		{Name: "kind", AttrType: TfString, Optional: true, Desc: "kind of storage e.g. ssd, hdd, nvme, flash, sd-card"},
 	}
 }
@@ -82,9 +82,9 @@ func (ds DroneStorage) objType() types.ObjectType {
 type DroneDeviceNetwork struct {
 	Kind       types.String  `tfsdk:"kind"`
 	MAC        types.String  `tfsdk:"mac"`
-	Bandwidth  types.Float64 `tfsdk:"bandwidth"`
-	MaxRange   types.Float64 `tfsdk:"max_range"`
-	PowerUsage types.Float64 `tfsdk:"power_usage"`
+	Bandwidth  types.Float32 `tfsdk:"bandwidth"`
+	MaxRange   types.Float32 `tfsdk:"max_range"`
+	PowerUsage types.Float32 `tfsdk:"power_usage"`
 }
 
 func (dn DroneDeviceNetwork) objType() types.ObjectType {
@@ -100,11 +100,11 @@ func (dn DroneDeviceNetwork) objType() types.ObjectType {
 
 func droneNetworkAttrs() []BaseSchema {
 	return []BaseSchema{
-		{Name: "bandwidth", AttrType: TFFloat64, Optional: true, Desc: "network bandwidth in mbps at mid distance from max"},
+		{Name: "bandwidth", AttrType: TFFloat, Optional: true, Desc: "network bandwidth in mbps at mid distance from max"},
 		{Name: "kind", AttrType: TfString, Optional: true, Desc: "kind of network interface radio/wifi5 etc"},
 		{Name: "mac", AttrType: TfString, Optional: true, Desc: "MAC address"},
-		{Name: "max_range", AttrType: TFFloat64, Optional: true, Desc: "maximum range in meters"},
-		{Name: "power_usage", AttrType: TFFloat64, Optional: true, Desc: "power usage in milli watts"},
+		{Name: "max_range", AttrType: TFFloat, Optional: true, Desc: "maximum range in meters"},
+		{Name: "power_usage", AttrType: TFFloat, Optional: true, Desc: "power usage in milli watts"},
 	}
 }
 

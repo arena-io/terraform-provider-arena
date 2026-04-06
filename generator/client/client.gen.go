@@ -1011,11 +1011,12 @@ type SchemaDeviceNetwork struct {
 
 // SchemaDeviceStorage defines model for schema.DeviceStorage.
 type SchemaDeviceStorage struct {
-	Capacity  *int    `json:"capacity,omitempty"`
-	DevPath   *string `json:"dev_path,omitempty"`
-	Guid      *string `json:"guid,omitempty"`
-	Kind      *string `json:"kind,omitempty"`
-	MountPath *string `json:"mount_path,omitempty"`
+	Capacity  *int                    `json:"capacity,omitempty"`
+	DevPath   *string                 `json:"dev_path,omitempty"`
+	Guid      *string                 `json:"guid,omitempty"`
+	Kind      *string                 `json:"kind,omitempty"`
+	Misc      *map[string]interface{} `json:"misc,omitempty"`
+	MountPath *string                 `json:"mount_path,omitempty"`
 }
 
 // SchemaDroneLinks defines model for schema.DroneLinks.
