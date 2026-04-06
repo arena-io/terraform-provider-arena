@@ -72,8 +72,14 @@ func (r *orgResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
+	if apiResp.JSON200 == nil || apiResp.JSON200.Id == nil {
+		resp.Diagnostics.AddError("res id in response cannot be nil;", fmt.Sprintf("bad response data: %v", apiResp.JSON200))
+		return
+	}
+	id := apiResp.JSON200.Id
+
 	// Read back the created org
-	getResp, err := r.cl.GetIamOrgGetWithResponse(ctx, &client.GetIamOrgGetParams{Id: data.ID.ValueStringPointer()})
+	getResp, err := r.cl.GetIamOrgGetWithResponse(ctx, &client.GetIamOrgGetParams{Id: id})
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read created org '%s': %s", data.ID.String(), err))
 		return

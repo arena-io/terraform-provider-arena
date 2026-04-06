@@ -17,6 +17,7 @@ import (
 
 type EngineModel struct {
 	Id       types.String         `tfsdk:"id"`
+	OrgID    types.String         `tfsdk:"org_id"`
 	Inactive types.Bool           `tfsdk:"inactive"`
 	Kind     types.String         `tfsdk:"kind"`
 	Name     types.String         `tfsdk:"name"`
@@ -28,6 +29,12 @@ func EngineDataSourceSchema(ctx context.Context) dschema.Schema {
 	return dschema.Schema{
 		Attributes: map[string]dschema.Attribute{
 			"id": dschema.StringAttribute{
+				Optional:            true,
+				Computed:            true,
+				Description:         "The unique identifier for the engine",
+				MarkdownDescription: "The unique identifier for the engine",
+			},
+			"org_id": dschema.StringAttribute{
 				Optional:            true,
 				Computed:            true,
 				Description:         "The unique identifier for the engine",
@@ -52,7 +59,7 @@ func EngineDataSourceSchema(ctx context.Context) dschema.Schema {
 			"spec": dschema.StringAttribute{
 				CustomType:          jsontypes.NormalizedType{},
 				Computed:            true,
-				Description:         "Engine-specific configuration details",
+				Description:         "Engine-specific configuration. see nomad examples for more details",
 				MarkdownDescription: "Engine-specific configuration details",
 			},
 			"tags": dschema.ListNestedAttribute{
@@ -78,6 +85,12 @@ func EngineResourceSchema(ctx context.Context) rschema.Schema {
 	return rschema.Schema{
 		Attributes: map[string]rschema.Attribute{
 			"id": rschema.StringAttribute{
+				Computed:            true,
+				Description:         "The unique identifier for the engine",
+				MarkdownDescription: "The unique identifier for the engine",
+			},
+			"org_id": rschema.StringAttribute{
+				Optional:            true,
 				Computed:            true,
 				Description:         "The unique identifier for the engine",
 				MarkdownDescription: "The unique identifier for the engine",

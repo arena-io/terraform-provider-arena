@@ -1,3 +1,6 @@
 [tools]
 go = "latest"
 "go:github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen" = "latest"
+opentofu = "latest"
+terraform = "latest"
+terragrunt = "latest"

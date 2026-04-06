@@ -217,7 +217,6 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 		}
 		tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 		return false
-
 	case tfBoolType():
 		if sourceFieldVal.Kind() == reflect.Bool {
 			if isNil {
@@ -226,10 +225,9 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 				destFieldVal.Set(reflect.ValueOf(types.BoolValue(sourceFieldVal.Bool())))
 			}
 			return true
-		} else {
-			tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
-			return false
 		}
+		tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+		return false
 	case tfInt64Type():
 		switch sourceFieldVal.Kind() {
 		case reflect.Int, reflect.Int32, reflect.Int64:

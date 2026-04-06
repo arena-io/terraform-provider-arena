@@ -72,8 +72,14 @@ func (r *userResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
+	if apiResp.JSON200 == nil || apiResp.JSON200.Id == nil {
+		resp.Diagnostics.AddError("res id in response cannot be nil;", fmt.Sprintf("bad response data: %v", apiResp.JSON200))
+		return
+	}
+	id := apiResp.JSON200.Id
+
 	// Read back the created user
-	getResp, err := r.cl.GetIamUserGetWithResponse(ctx, &client.GetIamUserGetParams{Id: data.ID.ValueStringPointer()})
+	getResp, err := r.cl.GetIamUserGetWithResponse(ctx, &client.GetIamUserGetParams{Id: id})
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read created user '%s': %s", data.ID.String(), err))
 		return

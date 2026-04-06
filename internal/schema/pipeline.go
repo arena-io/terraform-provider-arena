@@ -17,7 +17,6 @@ type Pipeline struct {
 	ModelCommon
 	Disabled types.Bool          `tfsdk:"disabled"`
 	Paused   basetypes.BoolValue `tfsdk:"paused"`
-	OrgID    types.String        `tfsdk:"org_id"`
 }
 
 type PipelineConfig struct {

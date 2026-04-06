@@ -116,8 +116,42 @@ tasks:
   gen-eg-files:
     cmds:
       - sh ./.tools/gen-example-files.sh
-
-
+  plan-eg:
+    cmds:
+      - terragrunt run plan --log-format bare --all
+    dir: examples
+  plan-res:
+    cmds:
+      - terragrunt run plan --log-format bare --filter './resources/**'
+    dir: examples
+  plan-ds:
+    cmds:
+      - terragrunt run plan --log-format bare --filter './data-sources/**'
+    dir: examples
+  apply-eg:
+    cmds:
+      - terragrunt run apply --log-format bare --all -- -auto-approve
+    dir: examples
+  apply-res:
+    cmds:
+      - terragrunt run apply --log-format bare --filter './resources/**' -- -auto-approve
+    dir: examples
+  apply-ds:
+    cmds:
+      - terragrunt run apply --log-format bare --filter './data-sources/**' -- -auto-approve
+    dir: examples
+  destroy-eg:
+    cmds:
+      - terragrunt run destroy --log-format bare --all --no-auto-approve=false -- -auto-approve
+    dir: examples
+  destroy-res:
+    cmds:
+      - terragrunt run destroy --log-format bare --filter './resources/**'
+    dir: examples
+  destroy-ds:
+    cmds:
+      - terragrunt run destroy --log-format bare --filter './data-sources/**'
+    dir: examples
 
 
 

@@ -87,7 +87,6 @@ func (w *BasisWatcher) FillFromResp(ctx context.Context, resp client.EntBasis) (
 }
 
 type BasisModel struct {
-	OrgId       types.String    `tfsdk:"org_id" json:"org_id"`
 	AllowedEnvs types.List      `tfsdk:"allowed_envs" json:"allowed_envs"`
 	Source      *BasisSource    `tfsdk:"source" json:"source,omitempty"`
 	Watcher     *BasisWatcher   `tfsdk:"watcher" json:"watcher,omitempty"`

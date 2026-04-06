@@ -286,6 +286,11 @@ func (d *DroneModel) ToModelJSON(ctx context.Context) (jsonDrone client.EntDrone
 }
 
 func (d *DroneProfileModel) ToModelJSON(ctx context.Context) (jsonProfile client.EntDroneProfile, err error) {
+	err = helper.ConvertTfModelToApiJSON(ctx, d, &jsonProfile)
+	if err != nil {
+		return
+	}
+
 	err = helper.ConvertTfModelToApiJSON(ctx, d.ModelCommon, &jsonProfile)
 	if err != nil {
 		return

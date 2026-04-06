@@ -1363,7 +1363,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api.RespID"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1567,7 +1574,7 @@
                 "parameters": [
                     {
                         "description": "Organization ID",
-                        "name": "orgId",
+                        "name": "org_id",
                         "in": "query",
                         "required": true,
                         "schema": {
@@ -1580,7 +1587,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api.RespID"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1786,7 +1800,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api.RespID"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -3581,6 +3602,9 @@
                     "name": {
                         "type": "string"
                     },
+                    "org_id": {
+                        "type": "string"
+                    },
                     "spec": {
                         "description": "engine-kind specific config details",
                         "type": "object",
@@ -3782,10 +3806,6 @@
                         "description": "Name holds the value of the \"name\" field.",
                         "type": "string"
                     },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
-                        "type": "string"
-                    },
                     "removed": {
                         "description": "Removed holds the value of the \"removed\" field.",
                         "type": "string"
@@ -3876,10 +3896,6 @@
                         "description": "Name holds the value of the \"name\" field.",
                         "type": "string"
                     },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
-                        "type": "string"
-                    },
                     "removed": {
                         "description": "Removed holds the value of the \"removed\" field.",
                         "type": "string"
@@ -3946,10 +3962,6 @@
                     },
                     "name": {
                         "description": "Name holds the value of the \"name\" field.",
-                        "type": "string"
-                    },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
                         "type": "string"
                     },
                     "removed": {
@@ -4034,10 +4046,6 @@
                         "description": "Name holds the value of the \"name\" field.",
                         "type": "string"
                     },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
-                        "type": "string"
-                    },
                     "removed": {
                         "description": "Removed holds the value of the \"removed\" field.",
                         "type": "string"
@@ -4096,10 +4104,6 @@
                     },
                     "name": {
                         "description": "Name holds the value of the \"name\" field.",
-                        "type": "string"
-                    },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
                         "type": "string"
                     },
                     "removed": {
@@ -4411,10 +4415,6 @@
                         "description": "Name holds the value of the \"name\" field.",
                         "type": "string"
                     },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
-                        "type": "string"
-                    },
                     "paused": {
                         "description": "paused pipeline queue new runs but dont shcedule them",
                         "type": "boolean"
@@ -4486,10 +4486,6 @@
                     },
                     "name": {
                         "description": "Name holds the value of the \"name\" field.",
-                        "type": "string"
-                    },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
                         "type": "string"
                     },
                     "removed": {
@@ -4572,10 +4568,6 @@
                     },
                     "name": {
                         "description": "Name holds the value of the \"name\" field.",
-                        "type": "string"
-                    },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
                         "type": "string"
                     },
                     "removed": {
@@ -4710,10 +4702,6 @@
                         "description": "Name holds the value of the \"name\" field.",
                         "type": "string"
                     },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
-                        "type": "string"
-                    },
                     "readonly": {
                         "description": "Readonly holds the value of the \"readonly\" field.",
                         "type": "boolean"
@@ -4769,10 +4757,6 @@
                     },
                     "name": {
                         "description": "Name holds the value of the \"name\" field.",
-                        "type": "string"
-                    },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
                         "type": "string"
                     },
                     "removed": {
@@ -4848,21 +4832,13 @@
                         "description": "Name holds the value of the \"name\" field.",
                         "type": "string"
                     },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
-                        "type": "string"
-                    },
                     "removed": {
                         "description": "Removed holds the value of the \"removed\" field.",
                         "type": "string"
                     },
                     "role": {
                         "description": "Role holds the value of the \"role\" field.",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/fixed.TeamRole"
-                            }
-                        ]
+                        "type": "string"
                     },
                     "updated": {
                         "description": "Updated holds the value of the \"updated\" field.",
@@ -4906,10 +4882,6 @@
                     },
                     "name": {
                         "description": "Name holds the value of the \"name\" field.",
-                        "type": "string"
-                    },
-                    "org_id": {
-                        "description": "OrgID holds the value of the \"orgID\" field.",
                         "type": "string"
                     },
                     "paused": {
@@ -5153,33 +5125,6 @@
                     "FlowRunStatusFailed",
                     "FlowRunStatusPaused",
                     "FlowRunStatusCancelled"
-                ]
-            },
-            "fixed.TeamRole": {
-                "type": "string",
-                "enum": [
-                    "admins",
-                    "ops",
-                    "devs",
-                    "viewer"
-                ],
-                "x-enum-comments": {
-                    "TeamAdmins": "full permission for everything in that org and add/remove users",
-                    "TeamDevs": "permission to view and map the pipelines to their own env with overrides, any changes need to be upstreamed through git",
-                    "TeamOps": "permission for the all resources in the org i.e. pipeline, basis, store and engines, can't add/remove users",
-                    "TeamViewer": "only use readonly apis"
-                },
-                "x-enum-descriptions": [
-                    "full permission for everything in that org and add/remove users",
-                    "permission for the all resources in the org i.e. pipeline, basis, store and engines, can't add/remove users",
-                    "permission to view and map the pipelines to their own env with overrides, any changes need to be upstreamed through git",
-                    "only use readonly apis"
-                ],
-                "x-enum-varnames": [
-                    "TeamAdmins",
-                    "TeamOps",
-                    "TeamDevs",
-                    "TeamViewer"
                 ]
             },
             "fixed.TriggerTiming": {
@@ -6071,10 +6016,11 @@
             "schema.SwarmSpec": {
                 "type": "object",
                 "properties": {
-                    "maxUnit": {
-                        "type": "integer"
+                    "active_quorum": {
+                        "description": "min percentage of units to be connected for an active fleet e.g., 0.5 for 50%",
+                        "type": "number"
                     },
-                    "minActivePartition": {
+                    "max_units": {
                         "type": "integer"
                     }
                 }
@@ -6082,6 +6028,10 @@
             "schema.TeamConfig": {
                 "type": "object",
                 "properties": {
+                    "allow_cross_org": {
+                        "description": "don't allow user from other orgs (only parent org users are allowed)",
+                        "type": "boolean"
+                    },
                     "sync_with": {
                         "description": "config for autosync of with an external ouath group like github teams",
                         "type": "object",

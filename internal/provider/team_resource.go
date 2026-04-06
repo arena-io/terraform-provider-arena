@@ -63,7 +63,7 @@ func (r *teamResource) Create(ctx context.Context, req resource.CreateRequest, r
 
 	// Call Create API
 	params := &client.PostIamTeamCreateParams{
-		OrgId: data.OrgId.ValueString(),
+		OrgId: data.OrgID.ValueString(),
 	}
 	apiResp, err := r.cl.PostIamTeamCreateWithResponse(ctx, params, apiTeam)
 	if err != nil {
@@ -75,8 +75,14 @@ func (r *teamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
+	if apiResp.JSON200 == nil || apiResp.JSON200.Id == nil {
+		resp.Diagnostics.AddError("res id in response cannot be nil;", fmt.Sprintf("bad response data: %v", apiResp.JSON200))
+		return
+	}
+	id := apiResp.JSON200.Id
+
 	// Read back the created team
-	getResp, err := r.cl.GetIamTeamGetWithResponse(ctx, &client.GetIamTeamGetParams{Id: data.ID.ValueStringPointer()})
+	getResp, err := r.cl.GetIamTeamGetWithResponse(ctx, &client.GetIamTeamGetParams{Id: id})
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read created team '%s': %s", data.ID.String(), err))
 		return

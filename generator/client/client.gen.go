@@ -32,14 +32,6 @@ const (
 	DriverScala   FixedDriverKind = "scala"
 )
 
-// Defines values for FixedTeamRole.
-const (
-	TeamAdmins FixedTeamRole = "admins"
-	TeamDevs   FixedTeamRole = "devs"
-	TeamOps    FixedTeamRole = "ops"
-	TeamViewer FixedTeamRole = "viewer"
-)
-
 // Defines values for FixedTriggerTiming.
 const (
 	TriggerPostNodeRun     FixedTriggerTiming = "post-node-run"
@@ -66,6 +58,7 @@ type EnginesEngineConfig struct {
 	Inactive *bool   `json:"inactive,omitempty"`
 	Kind     *string `json:"kind,omitempty"`
 	Name     *string `json:"name,omitempty"`
+	OrgId    *string `json:"org_id,omitempty"`
 
 	// Spec engine-kind specific config details
 	Spec *map[string]interface{} `json:"spec,omitempty"`
@@ -95,9 +88,6 @@ type EntAgent struct {
 
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
-
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
 
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
@@ -154,9 +144,6 @@ type EntBasis struct {
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
-
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
 
@@ -202,9 +189,6 @@ type EntDrone struct {
 
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
-
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
 
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
@@ -252,9 +236,6 @@ type EntDroneProfile struct {
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
-
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
 
@@ -291,9 +272,6 @@ type EntEnv struct {
 
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
-
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
 
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
@@ -498,9 +476,6 @@ type EntPipeline struct {
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
-
 	// Paused paused pipeline queue new runs but dont shcedule them
 	Paused *bool `json:"paused,omitempty"`
 
@@ -547,9 +522,6 @@ type EntSensor struct {
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
-
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
 
@@ -595,9 +567,6 @@ type EntSensorProfile struct {
 
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
-
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
 
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
@@ -687,9 +656,6 @@ type EntStorage struct {
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
-
 	// Readonly Readonly holds the value of the "readonly" field.
 	Readonly *bool `json:"readonly,omitempty"`
 
@@ -729,9 +695,6 @@ type EntSwarm struct {
 
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
-
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
 
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
@@ -776,14 +739,11 @@ type EntTeam struct {
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
-
 	// Removed Removed holds the value of the "removed" field.
 	Removed *string `json:"removed,omitempty"`
 
 	// Role Role holds the value of the "role" field.
-	Role *FixedTeamRole `json:"role,omitempty"`
+	Role *string `json:"role,omitempty"`
 
 	// Updated Updated holds the value of the "updated" field.
 	Updated *string `json:"updated,omitempty"`
@@ -814,9 +774,6 @@ type EntTrigger struct {
 
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
-
-	// OrgId OrgID holds the value of the "orgID" field.
-	OrgId *string `json:"org_id,omitempty"`
 
 	// Paused Paused holds the value of the "paused" field.
 	Paused *bool `json:"paused,omitempty"`
@@ -876,9 +833,6 @@ type EntUserEdges = map[string]interface{}
 
 // FixedDriverKind defines model for fixed.DriverKind.
 type FixedDriverKind string
-
-// FixedTeamRole defines model for fixed.TeamRole.
-type FixedTeamRole string
 
 // FixedTriggerTiming defines model for fixed.TriggerTiming.
 type FixedTriggerTiming string
@@ -1241,12 +1195,16 @@ type SchemaStoreConfig struct {
 
 // SchemaSwarmSpec defines model for schema.SwarmSpec.
 type SchemaSwarmSpec struct {
-	MaxUnit            *int `json:"maxUnit,omitempty"`
-	MinActivePartition *int `json:"minActivePartition,omitempty"`
+	// ActiveQuorum min percentage of units to be connected for an active fleet e.g., 0.5 for 50%
+	ActiveQuorum *float32 `json:"active_quorum,omitempty"`
+	MaxUnits     *int     `json:"max_units,omitempty"`
 }
 
 // SchemaTeamConfig defines model for schema.TeamConfig.
 type SchemaTeamConfig struct {
+	// AllowCrossOrg don't allow user from other orgs (only parent org users are allowed)
+	AllowCrossOrg *bool `json:"allow_cross_org,omitempty"`
+
 	// SyncWith config for autosync of with an external ouath group like github teams
 	SyncWith *map[string]interface{} `json:"sync_with,omitempty"`
 }
@@ -1443,7 +1401,7 @@ type PostIamTeamAddUserParams struct {
 // PostIamTeamCreateParams defines parameters for PostIamTeamCreate.
 type PostIamTeamCreateParams struct {
 	// OrgId Organization ID
-	OrgId string `form:"orgId" json:"orgId"`
+	OrgId string `form:"org_id" json:"org_id"`
 }
 
 // PostIamTeamDeactivateParams defines parameters for PostIamTeamDeactivate.
@@ -5812,7 +5770,7 @@ func NewPostIamTeamCreateRequestWithBody(server string, params *PostIamTeamCreat
 	if params != nil {
 		queryValues := queryURL.Query()
 
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "orgId", runtime.ParamLocationQuery, params.OrgId); err != nil {
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "org_id", runtime.ParamLocationQuery, params.OrgId); err != nil {
 			return nil, err
 		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 			return nil, err
@@ -9388,6 +9346,7 @@ func (r PostIamOrgActivateResponse) StatusCode() int {
 type PostIamOrgCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *ApiRespID
 }
 
 // Status returns HTTPResponse.Status
@@ -9558,6 +9517,7 @@ func (r PostIamTeamAddUserResponse) StatusCode() int {
 type PostIamTeamCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *ApiRespID
 }
 
 // Status returns HTTPResponse.Status
@@ -9728,6 +9688,7 @@ func (r PostIamUserActivateResponse) StatusCode() int {
 type PostIamUserCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *ApiRespID
 }
 
 // Status returns HTTPResponse.Status
@@ -12860,6 +12821,16 @@ func ParsePostIamOrgCreateResponse(rsp *http.Response) (*PostIamOrgCreateRespons
 		HTTPResponse: rsp,
 	}
 
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ApiRespID
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
 	return response, nil
 }
 
@@ -13008,6 +12979,16 @@ func ParsePostIamTeamCreateResponse(rsp *http.Response) (*PostIamTeamCreateRespo
 		HTTPResponse: rsp,
 	}
 
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ApiRespID
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
 	return response, nil
 }
 
@@ -13154,6 +13135,16 @@ func ParsePostIamUserCreateResponse(rsp *http.Response) (*PostIamUserCreateRespo
 	response := &PostIamUserCreateResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ApiRespID
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	}
 
 	return response, nil

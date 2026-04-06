@@ -22,7 +22,6 @@ type Store struct {
 	Disabled types.Bool   `tfsdk:"disabled"`
 	Endpoint types.String `tfsdk:"endpoint"`
 	Kind     types.String `tfsdk:"kind"`
-	OrgId    types.String `tfsdk:"org_id"`
 	ReadOnly types.Bool   `tfsdk:"read_only"`
 	Config   *StoreConfig `tfsdk:"config"`
 }

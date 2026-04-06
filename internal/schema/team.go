@@ -20,14 +20,15 @@ var t client.EntTeam
 
 type Team struct {
 	ModelCommon
-	OrgId    types.String `tfsdk:"org_id"`
+	OrgID    types.String `tfsdk:"org_id"`
 	Inactive types.Bool   `tfsdk:"inactive"`
 	Role     types.String `tfsdk:"role"`
 	Config   *TeamConfig  `tfsdk:"config"`
 }
 
 type TeamConfig struct {
-	SyncWith jsontypes.Normalized `tfsdk:"sync_with"`
+	SyncWith      jsontypes.Normalized `tfsdk:"sync_with"`
+	AllowCrossOrg types.Bool           `tfsdk:"allow_cross_org"`
 }
 
 func (c *TeamConfig) FillFromResp(ctx context.Context, resp client.EntTeam) (err error) {
@@ -107,6 +108,13 @@ func teamConfigAttrs() []BaseSchema {
 			AttrType: TfJSON,
 			Optional: true,
 			Desc:     "configuration for autosync with external oauth group",
+		},
+		{
+			Name:     "allow_cross_org",
+			AttrType: TfBoolean,
+			Optional: true,
+			Computed: true,
+			Desc:     "whether to allow user from other orgs, default false",
 		},
 	}
 }

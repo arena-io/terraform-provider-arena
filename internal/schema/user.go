@@ -150,18 +150,24 @@ func (u *User) FillFromResp(ctx context.Context, resp client.EntUser) (err error
 }
 
 func (u *User) ToModelJSON(ctx context.Context) (jsonUser client.EntUser, err error) {
+	err = helper.ConvertTfModelToApiJSON(ctx, u, &jsonUser)
+	if err != nil {
+		return
+	}
+
 	err = helper.ConvertTfModelToApiJSON(ctx, u.ModelCommon, &jsonUser)
 	if err != nil {
 		return
 	}
-	err = helper.ConvertTfModelToApiJSON(ctx, u, &jsonUser)
 
 	var clUserConf client.SchemaUserConfig
-	clUserConf, err = u.Config.ToModelJson(ctx)
-	if err != nil {
-		return
+	if u.Config != nil {
+		clUserConf, err = u.Config.ToModelJson(ctx)
+		if err != nil {
+			return
+		}
+		jsonUser.Config = &clUserConf
 	}
-	jsonUser.Config = &clUserConf
 
 	return
 }
@@ -194,21 +200,23 @@ func userConfigAttrs() []BaseSchema {
 
 const userConfigAttrDesc = "configuration for the user"
 
-func dsUserConfigSchema() dschema.SingleNestedAttribute {
-	return dschema.SingleNestedAttribute{
-		Attributes:          DSAttributes(userConfigAttrs()),
-		Computed:            true,
-		Description:         userConfigAttrDesc,
-		MarkdownDescription: userConfigAttrDesc,
+func dsUserSchemaBlocks() map[string]dschema.Block {
+	return map[string]dschema.Block{
+		"config": dschema.SingleNestedBlock{
+			Attributes:          DSAttributes(userConfigAttrs()),
+			Description:         userConfigAttrDesc,
+			MarkdownDescription: userConfigAttrDesc,
+		},
 	}
 }
 
-func resUserConfigSchema() rschema.SingleNestedAttribute {
-	return rschema.SingleNestedAttribute{
-		Attributes:          ResAttributes(userConfigAttrs()),
-		Optional:            true,
-		Description:         userConfigAttrDesc,
-		MarkdownDescription: userConfigAttrDesc,
+func resUserSchemaBlocks() map[string]rschema.Block {
+	return map[string]rschema.Block{
+		"config": rschema.SingleNestedBlock{
+			Attributes:          ResAttributes(userConfigAttrs()),
+			Description:         userConfigAttrDesc,
+			MarkdownDescription: userConfigAttrDesc,
+		},
 	}
 }
 
@@ -236,20 +244,20 @@ func userAttrs() []BaseSchema {
 
 func UserDSchema() dschema.Schema {
 	attrs := DSAttributes(userAttrs())
-	attrs["config"] = dsUserConfigSchema()
 
 	return dschema.Schema{
 		Attributes:  attrs,
+		Blocks:      dsUserSchemaBlocks(),
 		Description: "user resource",
 	}
 }
 
 func UserResourceSchema() rschema.Schema {
 	attrs := ResAttributes(userAttrs())
-	attrs["config"] = resUserConfigSchema()
 
 	return rschema.Schema{
 		Attributes:  attrs,
+		Blocks:      resUserSchemaBlocks(),
 		Description: "user resource",
 	}
 }
