@@ -2674,7 +2674,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api.RespID"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -5528,34 +5535,37 @@
                     }
                 }
             },
+            "schema.BasisFetch": {
+                "type": "object",
+                "properties": {
+                    "check_sum": {
+                        "type": "string"
+                    },
+                    "headers": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "insecure": {
+                        "type": "boolean"
+                    },
+                    "options": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "uri": {
+                        "type": "string"
+                    }
+                }
+            },
             "schema.BasisSource": {
                 "type": "object",
                 "properties": {
                     "fetch": {
-                        "type": "object",
-                        "properties": {
-                            "check_sum": {
-                                "type": "string"
-                            },
-                            "headers": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "type": "string"
-                                }
-                            },
-                            "insecure": {
-                                "type": "boolean"
-                            },
-                            "options": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "type": "string"
-                                }
-                            },
-                            "uri": {
-                                "type": "string"
-                            }
-                        }
+                        "$ref": "#/components/schemas/schema.BasisFetch"
                     },
                     "format": {
                         "description": "if empty then assumed json",

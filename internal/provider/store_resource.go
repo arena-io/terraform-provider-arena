@@ -72,8 +72,14 @@ func (r *storeResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
+	if apiResp.JSON200.Id == nil {
+		resp.Diagnostics.AddError("res id in response cannon be ni;", fmt.Sprintf("bad response data: %v", apiResp.JSON200))
+		return
+	}
+	id := apiResp.JSON200.Id
+
 	// Read back the created store
-	getResp, err := r.cl.GetStoreGetWithResponse(ctx, &client.GetStoreGetParams{Id: data.ID.ValueStringPointer()})
+	getResp, err := r.cl.GetStoreGetWithResponse(ctx, &client.GetStoreGetParams{Id: id})
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read created store '%s': %s", data.ID.String(), err))
 		return

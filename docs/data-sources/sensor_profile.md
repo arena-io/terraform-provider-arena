@@ -58,5 +58,4 @@ Read-Only:
 - `operating` (Map of Number) operating parameters
 - `power` (Map of Number) power parameters
 - `range_unit` (String) unit for range values
-- `units` (String) units
 - `v_fov` (Number) vertical field of view

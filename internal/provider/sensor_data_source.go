@@ -11,7 +11,6 @@ import (
 	"github.com/arena-ml/terraform-provider-arenaml/internal/schema"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/kr/pretty"
 )
 
 type sensorDataSource struct {
@@ -82,9 +81,7 @@ func (s *sensorDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 	sensorNode := apiResp.JSON200
 
-	tflog.Error(ctx, fmt.Sprintf("API Call Error : \n\n%s\n\n", pretty.Sprint(sensorNode)))
-
-	err = data.FillFromResp(ctx, sensorNode)
+	err = data.FillFromResp(ctx, *sensorNode)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("API response parsing error \nid : '%s' , err: %s", data.ID.String(), err.Error()))
 		return

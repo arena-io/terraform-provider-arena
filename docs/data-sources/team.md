@@ -36,4 +36,5 @@ team resource
 
 Read-Only:
 
+- `allow_cross_org` (Boolean) whether to allow user from other orgs, default false
 - `sync_with` (String) configuration for autosync with external oauth group

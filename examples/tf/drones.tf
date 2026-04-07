@@ -81,14 +81,62 @@ resource "arena_drone_profile" "radxa_5T" {
 
 
     details = {
-      memory        = "LPDDR5",
-      SoC           = "Broadcom BCM2712",
-      gpu           = "Arm Mali G610MC4"
-      opengl        = "ES1.1, ES2.0, and ES3.2"
-      opencl        = "1.1, 1.2 and 2.2"
-      nvme          = "M.2 M with PCIe 3.0 2-lane"
+      memory      = "LPDDR5",
+      SoC         = "Broadcom BCM2712",
+      gpu         = "Arm Mali G610MC4"
+      opengl      = "ES1.1, ES2.0, and ES3.2"
+      opencl      = "1.1, 1.2 and 2.2"
+      nvme        = "M.2 M with PCIe 3.0 2-lane"
       power_input = " 12V 5525 DC Jack"
       dimension   = "110 mm x 82 mm"
+    }
+  }
+}
+
+
+resource "arena_drone" "ugv_0" {
+  name       = "ugv-0"
+  kind       = "sbc"
+  profile_id = arena_drone_profile.rpi_5.id
+}
+
+resource "arena_drone" "ugv_special" {
+  name        = "ugv-rpi-5"
+  kind        = "sbc"
+  description = "ugv with rpi-5 as controller"
+  spec = {
+    arch         = "arm64"
+    memory_in_gb = 8
+
+    compute = {
+      "4xA76" = 2.4,
+      "total" = 9.6,
+    }
+
+    networks = {
+      "wifi" = {
+        kind      = "wifi-5"
+        max_range = 10
+        bandwidth = 50
+      }
+    }
+
+    storage = {
+      "sd-card" = {
+        kind       = "micro-sd"
+        capacity   = 118
+        mount_path = "/"
+        dev_path   = "/dev/mmcblk0p2"
+      }
+    }
+
+    power = {
+      capacity = "20000 mAh"
+      output   = "5V 3A / 9V 2.3A"
+    }
+
+    details = {
+      memory = "LPDDR4X",
     }
   }
 }

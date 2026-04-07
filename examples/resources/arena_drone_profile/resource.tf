@@ -81,12 +81,12 @@ resource "arena_drone_profile" "radxa_5T" {
 
 
     details = {
-      memory        = "LPDDR5",
-      SoC           = "Broadcom BCM2712",
-      gpu           = "Arm Mali G610MC4"
-      opengl        = "ES1.1, ES2.0, and ES3.2"
-      opencl        = "1.1, 1.2 and 2.2"
-      nvme          = "M.2 M with PCIe 3.0 2-lane"
+      memory      = "LPDDR5",
+      SoC         = "Broadcom BCM2712",
+      gpu         = "Arm Mali G610MC4"
+      opengl      = "ES1.1, ES2.0, and ES3.2"
+      opencl      = "1.1, 1.2 and 2.2"
+      nvme        = "M.2 M with PCIe 3.0 2-lane"
       power_input = " 12V 5525 DC Jack"
       dimension   = "110 mm x 82 mm"
     }

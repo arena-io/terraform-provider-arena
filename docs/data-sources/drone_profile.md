@@ -64,10 +64,13 @@ Optional:
 <a id="nestedatt--spec--storage"></a>
 ### Nested Schema for `spec.storage`
 
-Optional:
+Required:
 
 - `capacity` (Number) storage capacity in GB
+- `mount_path` (String) filesystem mount path of this disk
+
+Optional:
+
 - `dev_path` (String) path under /dev tree
 - `guid` (String) disk guid
 - `kind` (String) kind of storage e.g. ssd, hdd, nvme, flash, sd-card
-- `mount_path` (String) filesystem mount path of this disk

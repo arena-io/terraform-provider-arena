@@ -25,7 +25,6 @@ pipeline resource
 - `description` (String) A description of the basis
 - `disabled` (Boolean) disabled pipeline don't have any runs queued. Disabling a pipeline also cancels any queue or scheduled runs
 - `name` (String) The unique name of the basis
-- `org_id` (String) organization ID this pipeline belongs to
 - `paused` (Boolean) paused pipeline have new run queued but not scheduled until unpaused
 - `updated` (String) The timestamp when the basis was last updated
 - `version` (Number) The version of the basis

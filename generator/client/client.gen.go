@@ -953,15 +953,18 @@ type SchemaBasisConfig struct {
 	Watcher *SchemaBasisWatcher `json:"watcher,omitempty"`
 }
 
+// SchemaBasisFetch defines model for schema.BasisFetch.
+type SchemaBasisFetch struct {
+	CheckSum *string            `json:"check_sum,omitempty"`
+	Headers  *map[string]string `json:"headers,omitempty"`
+	Insecure *bool              `json:"insecure,omitempty"`
+	Options  *map[string]string `json:"options,omitempty"`
+	Uri      *string            `json:"uri,omitempty"`
+}
+
 // SchemaBasisSource defines model for schema.BasisSource.
 type SchemaBasisSource struct {
-	Fetch *struct {
-		CheckSum *string            `json:"check_sum,omitempty"`
-		Headers  *map[string]string `json:"headers,omitempty"`
-		Insecure *bool              `json:"insecure,omitempty"`
-		Options  *map[string]string `json:"options,omitempty"`
-		Uri      *string            `json:"uri,omitempty"`
-	} `json:"fetch,omitempty"`
+	Fetch *SchemaBasisFetch `json:"fetch,omitempty"`
 
 	// Format if empty then assumed json
 	Format *string `json:"format,omitempty"`
@@ -10386,6 +10389,7 @@ func (r PostSensorsUpdateResponse) StatusCode() int {
 type PostStoreCreateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON200      *ApiRespID
 }
 
 // Status returns HTTPResponse.Status
@@ -13892,6 +13896,16 @@ func ParsePostStoreCreateResponse(rsp *http.Response) (*PostStoreCreateResponse,
 	response := &PostStoreCreateResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ApiRespID
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	}
 
 	return response, nil

@@ -4,7 +4,7 @@
 // adding a local server for demo with `nomad agent -dev`
 resource "arena_cluster_manager" "local" {
   name = "eg-nomad-local"
-  kind  = "nomad"
+  kind = "nomad"
   spec = jsonencode({
     address = "http://loaclhost:4646"
   })
@@ -12,7 +12,7 @@ resource "arena_cluster_manager" "local" {
 
 resource "arena_cluster_manager" "pass_protected" {
   name = "eg-nomad-http-auth"
-  kind  = "nomad"
+  kind = "nomad"
   spec = jsonencode({
     address = "https://my.nomad.server"
     http_auth = {
@@ -24,13 +24,13 @@ resource "arena_cluster_manager" "pass_protected" {
 
 resource "arena_cluster_manager" "tls_certs" {
   name = "eg-nomad-tls"
-  kind  = "nomad"
+  kind = "nomad"
   spec = jsonencode({
     address = "https://safe.nomad.server"
-    tls_config =  {
+    tls_config = {
       client_cert = "/very/safe/file.crt"
-      client_key = "/very/safe/file.pem"
-      ca_cert = "/very/safe/file.ca"
+      client_key  = "/very/safe/file.pem"
+      ca_cert     = "/very/safe/file.ca"
     }
   })
 }

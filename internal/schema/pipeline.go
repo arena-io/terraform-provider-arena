@@ -84,12 +84,6 @@ func pipelineAttrs() []BaseSchema {
 	attrs := giveCommonAttributes()
 	pipelineAttrs := []BaseSchema{
 		{
-			Name:     "org_id",
-			AttrType: TfString,
-			Required: true,
-			Desc:     "organization ID this pipeline belongs to",
-		},
-		{
 			Name:     "disabled",
 			AttrType: TfBoolean,
 			Optional: true,

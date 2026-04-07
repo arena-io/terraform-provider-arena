@@ -28,7 +28,6 @@ description: |-
 - `frozen` (Boolean) Whether the basis is frozen
 - `kind` (String) The kind of basis (e.g., git, s3, gcs, etc.)
 - `name` (String) The unique name of the basis
-- `org_id` (String) The organization ID that the basis belongs to
 - `source` (Attributes) ( required ) source config of basis to be used by both watcher to check for new version (see [below for nested schema](#nestedatt--source))
 - `updated` (String) The timestamp when the basis was last updated
 - `version` (Number) The version of the basis

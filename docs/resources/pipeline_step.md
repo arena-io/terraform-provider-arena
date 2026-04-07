@@ -38,10 +38,6 @@ node of type step
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
-
-- `run_spec` (String) resource and other limits along with driver override
-
 Optional:
 
 - `args` (List of String) arguments for the command
@@ -50,3 +46,4 @@ Optional:
 - `image` (String) container image for the step
 - `privileged` (Boolean) run container in privileged mode
 - `registry_auth` (Map of String, Sensitive) authentication credentials for registry
+- `run_spec` (String) resource and other limits along with driver override

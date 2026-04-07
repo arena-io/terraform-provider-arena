@@ -29,7 +29,6 @@ storage resource
 - `endpoint` (String) endpoint URL for the store
 - `kind` (String) kind of storage backend
 - `name` (String) The unique name of the basis
-- `org_id` (String) organization id this store belongs to
 - `read_only` (Boolean) whether the store is read-only
 - `updated` (String) The timestamp when the basis was last updated
 - `version` (Number) The version of the basis

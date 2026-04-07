@@ -40,7 +40,7 @@ func ConvertJSONStructToSimpleTF[S any, U any](ctx context.Context, source S, de
 			// tflog.Warn(ctx, "DEST type is "+destField.Type.String()+" | "+destField.Name)
 			continue
 		} else {
-			// tflog.Warn(ctx, "DEST type is "+destField.Type.String()+" | "+destField.Name)
+			// tflog.Info(ctx, "DEST type is "+destField.Type.String()+" | "+destField.Name)
 		}
 		destFieldVal := destVal.Field(i)
 
@@ -55,7 +55,7 @@ func ConvertJSONStructToSimpleTF[S any, U any](ctx context.Context, source S, de
 		if tfsdkTag == "" {
 			// setTerraformNull(destFieldVal, destField.Type)
 			// skip in case of tf tag is not set
-			tflog.Warn(ctx, "tfsdk tag is required", map[string]interface{}{"dest_field": destField.Name})
+			tflog.Info(ctx, "tfsdk tag is required", map[string]interface{}{"dest_field": destField.Name})
 			continue
 		}
 
@@ -64,7 +64,7 @@ func ConvertJSONStructToSimpleTF[S any, U any](ctx context.Context, source S, de
 		if err != nil {
 			// Set to null/zero value if source field not found
 			// setTerraformNull(destFieldVal, destField.Type)
-			tflog.Warn(ctx, err.Error())
+			tflog.Info(ctx, err.Error())
 			continue
 		}
 
@@ -73,7 +73,7 @@ func ConvertJSONStructToSimpleTF[S any, U any](ctx context.Context, source S, de
 		// Convert and set the field value
 		ok := convertAndSetTfField(ctx, sourceFieldVal, destFieldVal, destField.Type)
 		if !ok {
-			tflog.Warn(ctx, "Error converting field", map[string]interface{}{
+			tflog.Info(ctx, "Error converting field", map[string]interface{}{
 				"dest_field": destField.Name,
 				"dest_type":  destField.Type.String(),
 				"sourceType": sourceFieldVal.Type(),
@@ -137,7 +137,7 @@ func tagFnForKey(k TagKey) getTagFn {
 
 func findSourceFieldByTag(ctx context.Context, sourceVal reflect.Value, sourceType reflect.Type, tagName string, tagKey TagKey) (reflect.Value, bool) {
 	if sourceType.Kind() == reflect.Ptr {
-		tflog.Warn(ctx, "source is a pointer", map[string]interface{}{"source_type": sourceType.String(), "tfsdk_tag": tagName})
+		tflog.Info(ctx, "source is a pointer", map[string]interface{}{"source_type": sourceType.String(), "tfsdk_tag": tagName})
 		return reflect.Value{}, false
 	}
 
@@ -157,7 +157,7 @@ func findSourceFieldByTag(ctx context.Context, sourceVal reflect.Value, sourceTy
 
 func findFieldIndexByTag(ctx context.Context, sourceType reflect.Type, tagKey TagKey, tagName string) (int, error) {
 	if sourceType.Kind() == reflect.Ptr {
-		tflog.Warn(ctx, "source is a pointer", map[string]interface{}{"source_type": sourceType.String(), "tfsdk_tag": tagName})
+		tflog.Info(ctx, "source is a pointer", map[string]interface{}{"source_type": sourceType.String(), "tfsdk_tag": tagName})
 		return -1, fmt.Errorf("source is a pointer")
 	}
 
@@ -215,7 +215,7 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 			}
 			return true
 		}
-		tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+		tflog.Info(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 		return false
 	case tfBoolType():
 		if sourceFieldVal.Kind() == reflect.Bool {
@@ -226,7 +226,7 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 			}
 			return true
 		}
-		tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+		tflog.Info(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 		return false
 	case tfInt64Type():
 		switch sourceFieldVal.Kind() {
@@ -238,7 +238,7 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 			}
 			return true
 		default:
-			tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+			tflog.Info(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 			return false
 		}
 	case tfInt32Type():
@@ -251,7 +251,7 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 			}
 			return true
 		default:
-			tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+			tflog.Info(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 			return false
 		}
 	case tfFloat32Type():
@@ -259,7 +259,7 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 		case reflect.Float32:
 			destFieldVal.Set(reflect.ValueOf(types.Float32Value(float32(sourceFieldVal.Float()))))
 		default:
-			tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+			tflog.Info(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 			return false
 		}
 	case tfFloat64Type():
@@ -268,7 +268,7 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 			destFieldVal.Set(reflect.ValueOf(types.Float64Value(sourceFieldVal.Float())))
 			return true
 		default:
-			tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+			tflog.Info(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 			return false
 		}
 	case tfFloat64Type():
@@ -276,7 +276,7 @@ func convertAndSetTfField(ctx context.Context, sourceFieldVal reflect.Value, des
 			destFieldVal.Set(reflect.ValueOf(types.Float32Value(float32(sourceFieldVal.Float()))))
 			return true
 		} else {
-			tflog.Warn(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
+			tflog.Info(ctx, fmt.Sprintf("type mismatch %s %s", sourceFieldVal.Kind(), destType.String()))
 			return false
 		}
 	default:

@@ -3,7 +3,7 @@
 terraform {
   required_providers {
     arena = {
-      source  = "arena-io/arena"
+      source = "arena-io/arena"
     }
   }
 }
@@ -20,21 +20,36 @@ resource "arena_cluster_manager" "def" {
 }
 
 resource "arena_org" "nav_dev" {
-  name = "nav-dev"
+  name        = "nav-dev"
   description = "developer group for navigation systems"
 }
 
 resource "arena_team" "auto_flight" {
-  name   = "path-planning"
-  role = "devs"
-  org_id = arena_org.nav_dev.id
+  name        = "path-planning"
+  role        = "devs"
+  org_id      = arena_org.nav_dev.id
   description = "dev team working on autonomous path planning"
   config = {
     allow_cross_orgs = true
   }
 }
 
-resource "arena_user" "rock_star" {
-  email = "rock@star.univ"
-  name  = "rock star"
+resource "arena_user" "super_dev" {
+  name  = "super-dev"
+  email = "dev@arenaml.dev"
+}
+
+
+resource "arena_store" "ais_staging" {
+  name     = "ais-staging"
+  kind     = "aistore"
+  basepath = "/arena-ml"
+  endpoint = "http://10.1.1.2:51080"
+  config = {
+    auth = jsonencode({
+      token = "top-secret"
+    })
+    max_objects = 1e6
+    capacity_gb = 1000
+  }
 }

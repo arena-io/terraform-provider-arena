@@ -221,7 +221,7 @@ func stepConfigAttrs() []BaseSchema {
 		{
 			Name:     "run_spec",
 			AttrType: TfJSON,
-			Required: true,
+			Optional: true,
 			Desc:     "resource and other limits along with driver override",
 		},
 	}

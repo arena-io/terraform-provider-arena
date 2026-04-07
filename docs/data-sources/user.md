@@ -22,7 +22,7 @@ user resource
 ### Read-Only
 
 - `active` (Boolean) whether the user is active
-- `config` (Attributes) configuration for the user (see [below for nested schema](#nestedatt--config))
+- `config` (Block, Read-only) configuration for the user (see [below for nested schema](#nestedblock--config))
 - `created` (String) The timestamp when the basis was created
 - `description` (String) A description of the basis
 - `email` (String) email address of the user
@@ -30,7 +30,7 @@ user resource
 - `updated` (String) The timestamp when the basis was last updated
 - `version` (Number) The version of the basis
 
-<a id="nestedatt--config"></a>
+<a id="nestedblock--config"></a>
 ### Nested Schema for `config`
 
 Read-Only:

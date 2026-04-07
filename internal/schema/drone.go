@@ -247,7 +247,17 @@ func (s *DroneSpec) FillFromResp(ctx context.Context, resp client.SchemaDroneSpe
 }
 
 func (d *DroneModel) ToModelJSON(ctx context.Context) (jsonDrone client.EntDrone, err error) {
-	err = helper.ConvertTfModelToApiJSON(ctx, d, &jsonDrone)
+	err = helper.ConvertTfModelToApiJSON(ctx, *d, &jsonDrone)
+	if err != nil {
+		return
+	}
+
+	err = helper.ConvertTfModelToApiJSON(ctx, d.ModelCommon, &jsonDrone)
+	if err != nil {
+		return
+	}
+
+	err = helper.ConvertTfModelToApiJSON(ctx, d.DroneCommon, &jsonDrone)
 	if err != nil {
 		return
 	}
@@ -506,7 +516,7 @@ func DroneResourceSchema() rschema.Schema {
 	attrs := ResAttributes(droneAttrs())
 	attrs["spec"] = rschema.SingleNestedAttribute{
 		Attributes:  ResAttributes(droneSpecAttrs()),
-		Required:    true,
+		Optional:    true,
 		Description: "drone device specification",
 	}
 	return rschema.Schema{
@@ -520,8 +530,8 @@ func DroneProfileResourceSchema() rschema.Schema {
 	attrs := ResAttributes(droneProfileAttrs())
 	attrs["spec"] = rschema.SingleNestedAttribute{
 		Attributes:  ResAttributes(droneSpecAttrs()),
-		Required:    true,
-		Description: "drone device specification",
+		Optional:    true,
+		Description: "drone device specification, values are inherited from drone profile instead if profile-id is set",
 	}
 	return rschema.Schema{
 		Attributes:          attrs,

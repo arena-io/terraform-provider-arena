@@ -19,10 +19,10 @@ type SensorProfileModel struct {
 }
 
 type SensorModel struct {
+	ModelCommon
+	SensorCommon
 	ProfileID types.String `tfsdk:"profile_id"` // id of sensor profile
 	Inactive  types.Bool   `tfsdk:"inactive"`
-	SensorCommon
-	ModelCommon
 }
 
 type SensorCommon struct {
@@ -56,6 +56,7 @@ type SensorInterface struct {
 
 func (s *SensorProfileModel) FillFromResp(ctx context.Context, r client.EntSensorProfile) (err error) {
 	helper.ConvertJSONStructToSimpleTF(ctx, r, s)
+
 	mc := &ModelCommon{}
 	helper.ConvertJSONStructToSimpleTF(ctx, r, mc)
 	s.ModelCommon = *mc
@@ -72,6 +73,11 @@ func (s *SensorProfileModel) FillFromResp(ctx context.Context, r client.EntSenso
 }
 
 func (s *SensorProfileModel) ToModelJSON(ctx context.Context) (jsonProfile client.EntSensorProfile, err error) {
+	err = helper.ConvertTfModelToApiJSON(ctx, *s, &jsonProfile)
+	if err != nil {
+		return
+	}
+
 	err = helper.ConvertTfModelToApiJSON(ctx, s.ModelCommon, &jsonProfile)
 	if err != nil {
 		return
@@ -103,7 +109,9 @@ func (s *SensorProfileModel) ToModelJSON(ctx context.Context) (jsonProfile clien
 	return
 }
 
-func (sm *SensorModel) FillFromResp(ctx context.Context, r *client.EntSensor) (err error) {
+func (sm *SensorModel) FillFromResp(ctx context.Context, r client.EntSensor) (err error) {
+	helper.ConvertJSONStructToSimpleTF(ctx, r, sm)
+
 	mc := &ModelCommon{}
 	helper.ConvertJSONStructToSimpleTF(ctx, r, mc)
 	sm.ModelCommon = *mc
@@ -128,6 +136,16 @@ func (sm *SensorModel) FillFromResp(ctx context.Context, r *client.EntSensor) (e
 
 func (sm *SensorModel) ToModelJSON(ctx context.Context) (jsonSensor client.EntSensor, err error) {
 	err = helper.ConvertTfModelToApiJSON(ctx, sm, &jsonSensor)
+	if err != nil {
+		return
+	}
+
+	err = helper.ConvertTfModelToApiJSON(ctx, sm.ModelCommon, &jsonSensor)
+	if err != nil {
+		return
+	}
+
+	err = helper.ConvertTfModelToApiJSON(ctx, sm.SensorCommon, &jsonSensor)
 	if err != nil {
 		return
 	}

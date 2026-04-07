@@ -89,7 +89,7 @@ func (r *sensorResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Received nil response from API when reading created sensor '%s'", data.ID.String()))
 		return
 	}
-	if err := data.FillFromResp(ctx, getResp.JSON200); err != nil {
+	if err := data.FillFromResp(ctx, *getResp.JSON200); err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("API response parsing error: %s", err))
 		return
 	}
@@ -103,6 +103,12 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() {
+		resp.Diagnostics.AddError("sensor id cannot be empty", "sensor profile id cannot be null")
+		return
+	}
+
+	tflog.Warn(ctx, fmt.Sprintf("\n\n\n state is is : %+v\n\n", data))
 
 	apiResp, err := r.cl.GetSensorsGetWithResponse(ctx, &client.GetSensorsGetParams{Id: data.ID.ValueString()})
 	if err != nil {
@@ -118,7 +124,7 @@ func (r *sensorResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	if err := data.FillFromResp(ctx, apiResp.JSON200); err != nil {
+	if err := data.FillFromResp(ctx, *apiResp.JSON200); err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("API response parsing error: %s", err))
 		return
 	}
@@ -167,7 +173,7 @@ func (r *sensorResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Received nil response from API when reading updated sensor '%s'", id))
 		return
 	}
-	if err := data.FillFromResp(ctx, getResp.JSON200); err != nil {
+	if err := data.FillFromResp(ctx, *getResp.JSON200); err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("API response parsing error: %s", err))
 		return
 	}

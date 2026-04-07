@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     arena = {
-      source  = "arena-io/arena"
+      source = "arena-io/arena"
     }
   }
 }

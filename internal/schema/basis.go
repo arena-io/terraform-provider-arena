@@ -152,12 +152,6 @@ func BasisDataSourceAttrs() []BaseSchema {
 			Desc:     "Whether the basis is frozen",
 		},
 		{
-			Name:     "org_id",
-			Optional: true,
-			AttrType: TfString,
-			Desc:     "The organization ID that the basis belongs to",
-		},
-		{
 			Name:     "kind",
 			Required: true,
 			AttrType: TfString,
@@ -202,7 +196,6 @@ func BasisWatcherAttrs() []BaseSchema {
 			Computed: true,
 			AttrType: TfBoolean,
 			Desc:     "if true then a separate collect job will launch to get new version. To handle cases where collection can take a lot of resources and time",
-			Default:  &attrDefault{StaticBool: false},
 		},
 		{
 			Name:      "registry_auth",

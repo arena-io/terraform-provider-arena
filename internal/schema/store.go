@@ -29,9 +29,9 @@ type Store struct {
 type StoreConfig struct {
 	Auth            jsontypes.Normalized `tfsdk:"auth"`
 	Spec            jsontypes.Normalized `tfsdk:"spec"`
-	MaxObjects      types.Int64          `tfsdk:"max_objects"`
-	CapacityGB      types.Int64          `tfsdk:"capacity_gb"`
-	MaxObjectSizeMB types.Int64          `tfsdk:"max_object_size_mb"`
+	MaxObjects      types.Int32          `tfsdk:"max_objects"`
+	CapacityGB      types.Int32          `tfsdk:"capacity_gb"`
+	MaxObjectSizeMB types.Int32          `tfsdk:"max_object_size_mb"`
 }
 
 func (c *StoreConfig) FillFromResp(ctx context.Context, resp client.EntStorage) (err error) {
@@ -135,19 +135,19 @@ func storeConfigAttrs() []BaseSchema {
 		},
 		{
 			Name:     "max_objects",
-			AttrType: TfInt64,
+			AttrType: TfInt,
 			Optional: true,
 			Desc:     "maximum number of objects",
 		},
 		{
 			Name:     "capacity_gb",
-			AttrType: TfInt64,
+			AttrType: TfInt,
 			Optional: true,
 			Desc:     "storage capacity in GB",
 		},
 		{
 			Name:     "max_object_size_mb",
-			AttrType: TfInt64,
+			AttrType: TfInt,
 			Optional: true,
 			Desc:     "maximum object size in MB",
 		},
@@ -200,12 +200,6 @@ func storeAttrs() []BaseSchema {
 			AttrType: TfString,
 			Required: true,
 			Desc:     "kind of storage backend",
-		},
-		{
-			Name:     "org_id",
-			AttrType: TfString,
-			Required: true,
-			Desc:     "organization id this store belongs to",
 		},
 		{
 			Name:     "read_only",
