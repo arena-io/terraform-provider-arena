@@ -4510,6 +4510,10 @@
                         "description": "Kind holds the value of the \"kind\" field.",
                         "type": "string"
                     },
+                    "model": {
+                        "description": "Model holds the value of the \"model\" field.",
+                        "type": "string"
+                    },
                     "name": {
                         "description": "Name holds the value of the \"name\" field.",
                         "type": "string"
@@ -4582,6 +4586,10 @@
                     },
                     "kind": {
                         "description": "Kind holds the value of the \"kind\" field.",
+                        "type": "string"
+                    },
+                    "model": {
+                        "description": "Model holds the value of the \"model\" field.",
                         "type": "string"
                     },
                     "name": {
@@ -5941,18 +5949,18 @@
                         "type": "object",
                         "additionalProperties": true
                     },
-                    "model": {
-                        "description": "info about device make",
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        }
-                    },
                     "operating": {
                         "description": "operating condition",
                         "type": "object",
                         "additionalProperties": {
                             "type": "number"
+                        }
+                    },
+                    "origin": {
+                        "description": "info about device make,year, manufacturing company etc",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
                         }
                     },
                     "power": {
@@ -5961,6 +5969,10 @@
                         "additionalProperties": {
                             "type": "number"
                         }
+                    },
+                    "prefferd_driver": {
+                        "description": "preferred driver if to forced else the most updated/efficient driver based on model name will be used",
+                        "type": "string"
                     },
                     "range_unit": {
                         "description": "output unit of the sensor which also to the scale used for min and max range",

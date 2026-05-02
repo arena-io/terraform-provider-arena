@@ -36,6 +36,7 @@
 resource "arenaml_sensor_profile" "lidar_STL27L" {
   name        = "STL27L-LDRobot"
   kind        = "2d_liadar"
+  model       = "STL27L"
   description = "2d lidar with 360 deg coverage"
   spec = {
     h_fov          = 360
@@ -79,6 +80,7 @@ resource "arenaml_sensor_profile" "lidar_STL27L" {
 resource "arenaml_sensor_profile" "lidar_VL53L0X" {
   name        = "VL53L0X"
   kind        = "point_liadar"
+  model       = "VL53L0X"
   description = "range finding point lidar"
   spec = {
     h_fov          = 25
@@ -119,6 +121,7 @@ resource "arenaml_sensor" "lidar_2D" {
 resource "arenaml_sensor" "range_lidar" {
   name        = "VL53L0X"
   kind        = "point_liadar"
+  model       = "vl53l0x"
   description = "range finding point lidar"
   spec = {
     h_fov          = 25

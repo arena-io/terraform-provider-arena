@@ -27,6 +27,7 @@ type SensorModel struct {
 
 type SensorCommon struct {
 	Kind      types.String     `tfsdk:"kind"`
+	Model     types.String     `tfsdk:"model"`
 	Spec      *SensorSpec      `tfsdk:"spec"`
 	Interface *SensorInterface `tfsdk:"interface"`
 }
@@ -40,7 +41,7 @@ type SensorSpec struct {
 	MinRange    types.Float32        `tfsdk:"min_range"`
 	MinRateInHz types.Float32        `tfsdk:"min_rate_in_hz"`
 	Misc        jsontypes.Normalized `tfsdk:"misc"`
-	Model       types.Map            `tfsdk:"model"`
+	Origin      types.Map            `tfsdk:"origin"`
 	Operating   types.Map            `tfsdk:"operating"`
 	Power       types.Map            `tfsdk:"power"`
 	RangeUnit   types.String         `tfsdk:"range_unit"`
@@ -176,7 +177,23 @@ func (sm *SensorModel) ToModelJSON(ctx context.Context) (jsonSensor client.EntSe
 		}
 	}
 
-	return
+	return jsonSensor, validSensorJson(jsonSensor)
+}
+
+func validSensorJson(j client.EntSensor) error {
+	modelEmpty := j.Model == nil || *j.Model == ""
+	kindEmpty := j.Kind == nil || *j.Kind == ""
+	profileEmpty := j.Edges == nil || j.Edges.Profile == nil || j.Edges.Profile.Id == nil || *j.Edges.Profile.Id == ""
+
+	if modelEmpty && profileEmpty {
+		return fmt.Errorf("both model and profile-id of a sensor resource can't be empty")
+	}
+
+	if kindEmpty && profileEmpty {
+		return fmt.Errorf("both kind and profile-id of a sensor resource can't be empty")
+	}
+
+	return nil
 }
 
 func (sc *SensorCommon) FillFromResp(ctx context.Context, kind *string, rSpec *client.SchemaSensorSpec, ifc *client.SchemaSensorInterface) (err error) {
@@ -221,9 +238,9 @@ func (s *SensorSpec) FillFromResp(ctx context.Context, resp client.SchemaSensorS
 		return fmt.Errorf("media: %w", err)
 	}
 
-	s.Model, err = helper.ToTfStringMap(ctx, resp.Model)
+	s.Origin, err = helper.ToTfStringMap(ctx, resp.Origin)
 	if err != nil {
-		return fmt.Errorf("model: %w", err)
+		return fmt.Errorf("origin: %w", err)
 	}
 
 	// map[string]float32 fields — convert to float32 map for TF
@@ -271,13 +288,13 @@ func (s *SensorSpec) ToModelJSON(ctx context.Context) (spec client.SchemaSensorS
 		spec.Media = &media
 	}
 
-	if !s.Model.IsNull() && !s.Model.IsUnknown() {
-		model, ok := helper.TfMapStrToGoMap(ctx, s.Model)
+	if !s.Origin.IsNull() && !s.Origin.IsUnknown() {
+		origin, ok := helper.TfMapStrToGoMap(ctx, s.Origin)
 		if !ok {
 			err = fmt.Errorf("failed to convert comm map")
 			return
 		}
-		spec.Model = &model
+		spec.Origin = &origin
 	}
 
 	if !s.Operating.IsNull() && !s.Operating.IsUnknown() {
@@ -343,7 +360,7 @@ func sensorSpecAttrs() []BaseSchema {
 		{Name: "min_range", AttrType: TFFloat, Optional: true, Desc: "minimum range"},
 		{Name: "min_rate_in_hz", AttrType: TFFloat, Optional: true, Desc: "minimum rate in Hz"},
 		{Name: "misc", AttrType: TfJSON, Optional: true, Desc: "miscellaneous parameters"},
-		{Name: "model", AttrType: TfMap, SubType: TfString, Optional: true, Desc: "model parameters"},
+		{Name: "origin", AttrType: TfMap, SubType: TfString, Optional: true, Desc: "details such as vendor,importer, sku, country, year etc"},
 		{Name: "operating", AttrType: TfMap, SubType: TFFloat, Optional: true, Desc: "operating parameters"},
 		{Name: "power", AttrType: TfMap, SubType: TFFloat, Optional: true, Desc: "power parameters"},
 		{Name: "range_unit", AttrType: TfString, Optional: true, Desc: "unit for range values"},
@@ -363,6 +380,7 @@ func sensorInterfaceAttrs() []BaseSchema {
 func sensorAttrs() []BaseSchema {
 	attrs := giveCommonAttributes()
 	sensorSpecific := []BaseSchema{
+		{Name: "model", AttrType: TfString, Optional: true, Desc: "sensor model, this needs to match the driver's supported model name/regex in the sensor-agent"},
 		{Name: "kind", AttrType: TfString, Required: true, Desc: "sensor kind"},
 		{Name: "profile_id", AttrType: TfString, Optional: true, Desc: "id of sensor profile"},
 		{Name: "inactive", AttrType: TfBoolean, Optional: true, Desc: "whether the sensor is inactive"},
@@ -411,6 +429,7 @@ func SensorProfileDSchema() dschema.Schema {
 func sensorProfileAttrs() []BaseSchema {
 	attrs := giveCommonAttributes()
 	sensorProfileSpecific := []BaseSchema{
+		{Name: "model", AttrType: TfString, Required: true, Desc: "sensor model, this needs to match the driver's supported model name/regex in the sensor-agent"},
 		{Name: "kind", AttrType: TfString, Optional: true, Desc: "sensor kind"},
 	}
 	return append(attrs, sensorProfileSpecific...)

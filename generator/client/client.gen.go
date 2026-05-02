@@ -528,6 +528,9 @@ type EntSensor struct {
 	// Kind Kind holds the value of the "kind" field.
 	Kind *string `json:"kind,omitempty"`
 
+	// Model Model holds the value of the "model" field.
+	Model *string `json:"model,omitempty"`
+
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 
@@ -570,6 +573,9 @@ type EntSensorProfile struct {
 
 	// Kind Kind holds the value of the "kind" field.
 	Kind *string `json:"kind,omitempty"`
+
+	// Model Model holds the value of the "model" field.
+	Model *string `json:"model,omitempty"`
 
 	// Name Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
@@ -1151,14 +1157,17 @@ type SchemaSensorSpec struct {
 	// Misc any extra info
 	Misc *map[string]interface{} `json:"misc,omitempty"`
 
-	// Model info about device make
-	Model *map[string]string `json:"model,omitempty"`
-
 	// Operating operating condition
 	Operating *map[string]float32 `json:"operating,omitempty"`
 
+	// Origin info about device make,year, manufacturing company etc
+	Origin *map[string]string `json:"origin,omitempty"`
+
 	// Power different power reqs like voltage, avg wattage etc
 	Power *map[string]float32 `json:"power,omitempty"`
+
+	// PrefferdDriver preferred driver if to forced else the most updated/efficient driver based on model name will be used
+	PrefferdDriver *string `json:"prefferd_driver,omitempty"`
 
 	// RangeUnit output unit of the sensor which also to the scale used for min and max range
 	RangeUnit *string `json:"range_unit,omitempty"`

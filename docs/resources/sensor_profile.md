@@ -17,6 +17,7 @@ Manages a sensor profile resource.
 
 ### Required
 
+- `model` (String) sensor model, this needs to match the driver's supported model name/regex in the sensor-agent
 - `name` (String) The unique name of the basis
 - `spec` (Attributes) sensor specification (see [below for nested schema](#nestedatt--spec))
 
@@ -46,8 +47,8 @@ Optional:
 - `min_range` (Number) minimum range
 - `min_rate_in_hz` (Number) minimum rate in Hz
 - `misc` (String) miscellaneous parameters
-- `model` (Map of String) model parameters
 - `operating` (Map of Number) operating parameters
+- `origin` (Map of String) details such as vendor,importer, sku, country, year etc
 - `power` (Map of Number) power parameters
 - `range_unit` (String) unit for range values
 - `v_fov` (Number) vertical field of view
