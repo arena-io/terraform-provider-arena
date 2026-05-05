@@ -64,7 +64,8 @@ func (s *SensorProfileModel) FillFromResp(ctx context.Context, r client.EntSenso
 	tflog.Warn(ctx, fmt.Sprintf("model common for sensor profile \n\n %+v \n\n %+v \n\n", mc, r))
 
 	sc := &SensorCommon{}
-	err = sc.FillFromResp(ctx, r.Kind, r.Spec, r.Interface)
+	helper.ConvertJSONStructToSimpleTF(ctx, r, sc)
+	err = sc.FillSpecAndInterface(ctx, r.Kind, r.Spec, r.Interface)
 	if err != nil {
 		return
 	}
@@ -118,7 +119,8 @@ func (sm *SensorModel) FillFromResp(ctx context.Context, r client.EntSensor) (er
 	sm.ModelCommon = *mc
 
 	sc := &SensorCommon{}
-	err = sc.FillFromResp(ctx, r.Kind, r.Spec, r.Interface)
+	helper.ConvertJSONStructToSimpleTF(ctx, r, sc)
+	err = sc.FillSpecAndInterface(ctx, r.Kind, r.Spec, r.Interface)
 	if err != nil {
 		return
 	}
@@ -196,10 +198,7 @@ func validSensorJson(j client.EntSensor) error {
 	return nil
 }
 
-func (sc *SensorCommon) FillFromResp(ctx context.Context, kind *string, rSpec *client.SchemaSensorSpec, ifc *client.SchemaSensorInterface) (err error) {
-	if kind != nil {
-		sc.Kind = types.StringValue(*kind)
-	}
+func (sc *SensorCommon) FillSpecAndInterface(ctx context.Context, kind *string, rSpec *client.SchemaSensorSpec, ifc *client.SchemaSensorInterface) (err error) {
 
 	// parse spec using its own method
 	if rSpec != nil {
